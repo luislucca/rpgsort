@@ -2,7 +2,323 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Listas e Tabelas RPG</title>
-    <link rel="stylesheet" href="main.css">
+    <style>
+      body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background: #1a1a1a;
+    color: #e0e0e0;
+}
+
+.container {
+    background: #2d2d2d;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+
+.list-card {
+    background: #383838;
+    padding: 15px;
+    margin: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    display: inline-block;
+    width: 200px;
+    text-align: center;
+    vertical-align: top;
+}
+
+.list-card-content {
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+.list-card:hover {
+    transform: none;
+    background: #404040;
+}
+
+.list-card h3 {
+    margin: 0 0 5px 0;
+    color: #3498db;
+}
+
+.list-card p {
+    margin: 0;
+    font-size: 14px;
+    color: #999;
+}
+
+.list-card button {
+    width: 100%;
+    margin-top: 10px;
+    padding: 8px 16px;
+    background: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.2s;
+    min-width: 100px;
+}
+
+.list-card button:hover {
+    background: #c0392b;
+}
+
+.action-bar {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+    background: #333;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+}
+
+.action-bar input,
+.action-bar select {
+    padding: 10px;
+    min-width: 200px;
+}
+
+.action-bar button {
+    padding: 10px 20px;
+    font-weight: bold;
+}
+
+input, select {
+    padding: 8px;
+    border: 1px solid #4d4d4d;
+    border-radius: 4px;
+    font-size: 14px;
+    background: #383838;
+    color: #e0e0e0;
+}
+
+button {
+    background: #3498db;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+button:hover {
+    background: #2980b9;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: #2d2d2d;
+    padding: 20px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 800px;
+    max-height: 80vh;
+    overflow-y: auto;
+    color: #e0e0e0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    border: 1px solid #4d4d4d;
+}
+
+th, td {
+    border: 1px solid #4d4d4d;
+    padding: 12px;
+    text-align: left;
+    background: #383838;
+}
+
+th {
+    background: #2d2d2d;
+    position: relative;
+}
+
+tr.selected {
+    background-color: #4a6f8a;
+    animation: highlight 1s ease-in-out;
+}
+
+.column-actions {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.column-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px;
+}
+
+.move-buttons {
+    display: flex;
+    gap: 5px;
+}
+
+.move-btn {
+    padding: 2px 5px;
+    font-size: 12px;
+    background: #ddd;
+}
+
+.edit-column-header {
+    cursor: pointer;
+}
+
+.row-actions {
+    display: flex;
+    gap: 5px;
+}
+
+@keyframes highlight {
+    0% { background-color: #383838; }
+    50% { background-color: #ffeb3b; }
+    100% { background-color: #4a6f8a; }
+}
+
+.dice-roll-area {
+    margin: 20px 0;
+    padding: 15px;
+    background: #383838;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.selected-item {
+    font-weight: bold;
+    color: #2980b9;
+}
+
+[contenteditable="true"] {
+    padding: 5px;
+    border: 1px solid transparent;
+    transition: border-color 0.3s;
+}
+
+[contenteditable="true"]:hover {
+    border-color: #4d4d4d;
+    background-color: #404040;
+}
+
+[contenteditable="true"]:focus {
+    border-color: #3498db;
+    background-color: #454545;
+    outline: none;
+}
+
+.column-roll-button {
+    padding: 2px 5px;
+    font-size: 12px;
+    background: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: 5px;
+}
+
+.column-roll-button:hover {
+    background: #2980b9;
+}
+
+#simpleList {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+}
+
+#simpleList .list-card {
+    width: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0;
+    padding: 10px 15px;
+}
+
+#simpleList .list-card span {
+    flex: 1;
+    text-align: left;
+}
+
+#simpleList .row-actions {
+    display: flex;
+    gap: 5px;
+}
+
+.folder-card, .folder-content, .folder-card h2, .folder-content.collapsed {
+    display: none;
+}
+
+.list-dropdown {
+    margin-bottom: 15px;
+    border-radius: 8px;
+    background: #2d2d2d;
+    width: 100%;
+}
+
+.dropdown-header {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    background: #383838;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.dropdown-header:hover {
+    background: #404040;
+}
+
+.dropdown-content {
+    display: none;
+    padding: 10px;
+    background: #333;
+    border-radius: 0 0 8px 8px;
+}
+
+.dropdown-content.show {
+    display: block;
+}
+
+.list-actions {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+}
+
+.list-actions select,
+.list-actions button {
+    padding: 5px 10px;
+    font-size: 14px;
+}
+    </style>
     </head>
 <body>
     <div class="container">
